@@ -24,27 +24,9 @@ const JournalPosts = () => {
       });
   }, [token]);
 
-  // journals.map((journal) => {
-  //   var dateCreated = new Date(journal.dateCreated);
-  //   return (
-  //     <div>
-  //       <Styled.SectionWrapper>
-  //         <section>
-  //           <Styled.DateWrapper>{dateCreated.getDate()}</Styled.DateWrapper>
-  //         </section>
-  //         <section>
-  //           <Styled.ContentWrapper>
-  //             {journal.content.slice(0, 49)} ...
-  //           </Styled.ContentWrapper>
-  //         </section>
-  //       </Styled.SectionWrapper>
-  //     </div>
-  //   );
-  // });
-
   return (
     <div>
-      {journals.length === 0 && "There is no journals"}
+      {journals.length === 0 && "There are no journals"}
       {journals.map((journal) => (
         <Journal key={journal.dateCreated} {...journal} />
       ))}

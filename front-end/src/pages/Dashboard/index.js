@@ -46,18 +46,6 @@ const Dashboard = (props) => {
           </section>
         </Styled.SectionsWrapper>
 
-        <Styled.SectionsWrapper style={{ flexDirection: "column" }}>
-          <section>
-            <Typography.SectionTitleUnderline>
-              Your Journals
-            </Typography.SectionTitleUnderline>
-          </section>
-
-          <section>
-            <JournalPosts />
-          </section>
-        </Styled.SectionsWrapper>
-
         <Styled.SettingWrapper>
           <section>
             <Styled.SettingHeader>

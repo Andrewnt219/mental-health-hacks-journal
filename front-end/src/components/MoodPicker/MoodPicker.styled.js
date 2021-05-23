@@ -7,8 +7,8 @@ export const Wrapper = styled.article`
   gap: 2px;
   border-radius: 50%;
   overflow: hidden;
-  height: 25rem;
-  width: 25rem;
+  height: 20rem;
+  width: 20rem;
 
   & > button:nth-child(odd) {
     justify-content: flex-end;
