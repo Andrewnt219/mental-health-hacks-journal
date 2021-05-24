@@ -1,8 +1,9 @@
 const { admin, db } = require("../utils/init");
 const { analyze } = require("./sentiment");
 const { addPrompt } = require("./prompts");
+const { thisWeekTracker } = require("./weeklyTrackers");
 
-exports.getUsersJournals = (req, res) => {  
+exports.getUsersJournals = (req, res) => {
   db.collection("journals")
     .where("userId", "==", `${req.user.userId}`)
     .orderBy("dateCreated", "desc")
@@ -65,15 +66,13 @@ exports.addJournal = async (req, res) => {
 
     const analysis = await analyze(req.body.content);
 
-
-  const newJournal = {
-    content: req.body.content,
-    userId: req.user.userId,
-    dateCreated: new Date().toISOString(),
-    moodStatus: req.body.moodStatus,
-    moodScore: analysis.score,
-  };
-
+    const newJournal = {
+      content: req.body.content,
+      userId: req.user.userId,
+      dateCreated: new Date().toISOString(),
+      moodStatus: req.body.moodStatus,
+      moodScore: analysis.score,
+    };
 
     db.collection("journals")
       .add(newJournal)
@@ -81,18 +80,25 @@ exports.addJournal = async (req, res) => {
         const resJournal = newJournal;
         resJournal.journalId = doc.id;
 
-      // Filter negative or mixed journal only when user allows
-      const isNegativeOrMixedScore =
-        analysis.score < 0 || (analysis.score == 0 && analysis.magnitude > 1);
-      if (req.body.allowPrompt && isNegativeOrMixedScore) {
-        resJournal.magnitude = analysis.magnitude;
-        resJournal.visible = req.body.allowPrompt;
-        // Create a prompt from negative content
-        addPrompt(resJournal);
-      }
+        // Filter negative or mixed journal only when user allows
+        const isNegativeOrMixedScore =
+          analysis.score < 0 || (analysis.score == 0 && analysis.magnitude > 1);
+        if (req.body.allowPrompt && isNegativeOrMixedScore) {
+          resJournal.magnitude = analysis.magnitude;
+          resJournal.visible = req.body.allowPrompt;
+          // Create a prompt from negative content
+          addPrompt(resJournal);
+        }
 
-
-        res.status(200).json(resJournal);
+        const dateOfWeek = new Date().getDay();
+        thisWeekTracker(req.user.userId)
+          .then((tracker) => {
+            tracker.journalWritten[dateOfWeek - 1] = true;
+            return db.doc(`/weeklyTrackers/${tracker.trackerId}`).set(tracker);
+          })
+          .then(() => {
+            res.status(200).json(resJournal);
+          });
       })
       .catch((err) => {
         console.error(err);

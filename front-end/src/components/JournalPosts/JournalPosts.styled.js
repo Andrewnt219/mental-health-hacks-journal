@@ -7,7 +7,7 @@ export const SectionWrapper = styled.div`
   border-color: rgba(255, 176, 84, 0.4);
   border-radius: ${(p) => p.theme.rounded.default};
   display: flex;
-  margin: ${(p) => p.theme.spacing[2]} 0;
+  margin-bottom: ${(p) => p.theme.spacing[2]};
   width: 100%;
   height: 60px;
 `;
@@ -27,12 +27,12 @@ export const ContentWrapper = styled.div`
 export const DateWrapper = styled.div`
   background: #ffcd93;
   color: #4d6060;
-  //   line-height: 31.5px;
   font-weight: bold;
+  font-size: 0.8em;
   justify-content: left;
   align-items: center;
   border-radius: ${(p) => p.theme.rounded.default};
-  padding: 11px;
+  padding: 7px;
   margin: ${(p) => p.theme.spacing[2]} ${(p) => p.theme.spacing[3]};
   width: 39px;
   height: 39px;

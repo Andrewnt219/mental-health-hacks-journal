@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import React from "react";
 import {
-  Label,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -28,9 +27,7 @@ const MoodChart = () => {
       <LineChart data={data} margin={{ left: -60 }}>
         <Line type="monotone" dataKey="value" stroke="#F2994A" fill="#FF9F43" />
 
-        <XAxis dataKey="date" tick={false}>
-          <Label value="Neutral" position="insideBottom" />
-        </XAxis>
+        <XAxis dataKey="date" tick={false} />
 
         <YAxis dataKey="value" tick={false} />
         <Tooltip />

@@ -1,37 +1,44 @@
+import ProtectedRoute from "components/ProtectedRoute";
+import Homepage from "pages/Homepage/index";
 import React, { Suspense } from "react";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
+import Dashboard from "./Dashboard";
 import EntryAddPage from "./entry/Add/index";
-
-const Home = React.lazy(() => import("pages/Homepage/index"));
-const Dashboard = React.lazy(() => import("pages/Dashboard/index"));
-const UserLogin = React.lazy(() => import("pages/user/Login/index"));
-const UserSignup = React.lazy(() => import("pages/user/Signup/index"));
+import EntryPage from "./entry/Index";
+import UserLogin from "./user/Login";
+import UserSignup from "./user/Signup";
 
 const Routes = () => {
   return (
-    <Router>
-      <Suspense fallback={<h1>Loading</h1>}>
-        <Switch>
-          <Route path="/user/login" component={UserLogin} />
-          <Route path="/user/signup" component={UserSignup} />
-          <Route path="/user/dashboard" component={Dashboard} />
+    <Suspense fallback={<h1>Loading</h1>}>
+      <Switch>
+        <ProtectedRoute path="/user/dashboard">
+          <Dashboard />
+        </ProtectedRoute>
 
-          <Route path="/entry/add">
-            <EntryAddPage />
-          </Route>
+        <Route path="/user/login">
+          <UserLogin />
+        </Route>
+        <Route path="/user/signup">
+          <UserSignup />
+        </Route>
 
-          <Route path="/" component={Home} exact />
-          <Route path="/404" component={() => <h1>Page not found</h1>} />
+        <ProtectedRoute path="/entry/add">
+          <EntryAddPage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/entry">
+          <EntryPage />
+        </ProtectedRoute>
 
-          <Redirect to="/404" />
-        </Switch>
-      </Suspense>
-    </Router>
+        <ProtectedRoute path="/" exact>
+          <Homepage />
+        </ProtectedRoute>
+
+        <Route path="/404" component={() => <h1>Page not found</h1>} />
+
+        <Redirect to="/404" />
+      </Switch>
+    </Suspense>
   );
 };
 

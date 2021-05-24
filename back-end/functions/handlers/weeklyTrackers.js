@@ -27,21 +27,30 @@ const getAllWeeklyTrackersOfUser = (userId) => {
     });
 };
 
-exports.getThisWeekTracker = (req, res) => {
+exports.thisWeekTracker = (userId) => {
   const current = new Date().getTime();
-  getAllWeeklyTrackersOfUser(req.user.userId)
+  return getAllWeeklyTrackersOfUser(userId)
     .then((weeklyTrackers) => {
       const tracker = weeklyTrackers.filter(
         (tracker) => current >= tracker.startDate && current <= tracker.endDate
       );
 
-      return res.status(200).json(tracker[0]);
+      return tracker;
     })
     .catch((err) => {
       console.error(err);
-      res
-        .status(500)
-        .json({ error: "Something went wrong, please try again!" });
+      throw new Error("Something went wrong, please try again");
+    });
+};
+
+exports.getThisWeekTracker = (req, res) => {
+  this.thisWeekTracker(req.user.userId)
+    .then((tracker) => {
+      res.status(200).json(tracker);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ error: "Something went wrong, please try again" });
     });
 };
 

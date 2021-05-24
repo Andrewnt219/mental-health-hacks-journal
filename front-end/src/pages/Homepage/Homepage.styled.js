@@ -6,10 +6,11 @@ export const Header = styled.header`
   align-items: center;
 `;
 export const SectionsWrapper = styled.div`
-  margin-top: ${(p) => p.theme.spacing[5]};
+  margin-top: ${(p) => p.theme.spacing[3]};
+  margin-bottom: ${(p) => p.theme.spacing[3]};
 
   > * + * {
-    margin-top: ${(p) => p.theme.spacing[4]};
+    margin-top: ${(p) => p.theme.spacing[2]};
   }
 `;
 
@@ -22,7 +23,7 @@ export const EditButton = styled.button`
   border-radius: ${(p) => p.theme.rounded.default};
   padding: ${(p) => p.theme.spacing[2]} ${(p) => p.theme.spacing[3]};
   margin-left: ${(p) => p.theme.spacing[2]};
-  margin-bottom: ${(p) => p.theme.spacing[4]};
+  margin-bottom: ${(p) => p.theme.spacing[3]};
   width: 100%;
 
   > svg {

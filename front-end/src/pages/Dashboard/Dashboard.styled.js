@@ -11,6 +11,7 @@ export const SettingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: ${(p) => p.theme.rounded.default};
+  margin-bottom: ${(p) => p.theme.spacing[6]};
   width: 100%;
 `;
 

@@ -3,10 +3,9 @@ import { ReactComponent as ProfileIcon } from "assets/svg/profile.svg";
 import { ReactComponent as RegisterHero } from "assets/svg/register-hero.svg";
 import Input from "components/Input/index";
 import Link from "components/ui/Link";
-import axios from "axios";
+import { useAuth } from "context/AuthContext";
 // import Wrapper from "components/ui/Wrapper";
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import * as Styled from "../User.styled";
 
@@ -37,8 +36,6 @@ const UserSignup = () => {
 };
 
 const SignupForm = () => {
-  const history = useHistory();
-
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -46,7 +43,7 @@ const SignupForm = () => {
     password: "",
   });
 
-  const [error, setError] = useState("");
+  const { signup, error } = useAuth();
 
   const handleChange = (ev) => {
     const { name, value } = ev.target;
@@ -56,30 +53,7 @@ const SignupForm = () => {
   const handleSubmit = (ev) => {
     ev.preventDefault();
 
-    axios
-      .post(
-        "https://us-central1-mental-health-1bd2d.cloudfunctions.net/api/users/signup",
-        {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          password: formData.password,
-        }
-      )
-      .then((res) => {
-        console.log(res.data.message);
-        history.push("/");
-      })
-      .catch((err) => {
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          password: "",
-        });
-        setError(err.response.data.error);
-        console.log(err.response.data.error);
-      });
+    signup(formData);
   };
 
   return (

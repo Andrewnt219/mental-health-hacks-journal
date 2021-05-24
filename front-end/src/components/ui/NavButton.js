@@ -1,7 +1,8 @@
-import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 
-const NavButton = withStyles({
+const StyledNavButton = withStyles({
   root: {
     boxShadow: "none",
     border: "1.2px solid",
@@ -35,5 +36,13 @@ const NavButton = withStyles({
     },
   },
 })(Button);
+
+function NavButton({ href, children }) {
+  return (
+    <StyledNavButton>
+      <Link to={href}>{children}</Link>
+    </StyledNavButton>
+  );
+}
 
 export default NavButton;

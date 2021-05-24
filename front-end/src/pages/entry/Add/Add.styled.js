@@ -103,3 +103,13 @@ export const Link = styled(BaseLink)`
   margin-top: 1.7rem;
   font-weight: 600;
 `;
+
+// Entry Styles
+
+export const ContentWrapper = styled.section`
+  height: auto;
+  line-height: 1.5em;
+  margin: 0 5%;
+  margin-top: ${(p) => p.theme.spacing[5]};
+  margin-bottom: ${(p) => p.theme.spacing[6]};
+`;

@@ -1,11 +1,12 @@
+import { fireStoreApi } from "api/firestore-api";
 import { ReactComponent as ArrowRight } from "assets/svg/arrow-right.svg";
 import { ReactComponent as ArrrowLeftButton } from "assets/svg/arrrow-left-button.svg";
 import { ReactComponent as Checkmark } from "assets/svg/checkmark.svg";
-import axios from "axios";
 import Layout from "components/Layout";
 import MoodPickerRow, { emojiLookup } from "components/MoodPickerRow";
 import Button from "components/ui/Button";
 import * as Typography from "components/ui/Typography";
+import { useAuth } from "context/AuthContext";
 import dayjs from "dayjs";
 import React, { useEffect, useReducer, useState } from "react";
 import * as Styled from "./Add.styled";
@@ -22,7 +23,7 @@ const reducer = (state, action) => {
       return { ...state, currentStep: previousStep };
 
     case "SELECT_MOOD":
-      return { ...state, mood: action.payload, currentStep: 2 };
+      return { ...state, moodStatus: action.payload, currentStep: 2 };
 
     case "SUBMIT_ENTRY":
       return { ...state, ...action.payload, currentStep: 3 };
@@ -35,14 +36,15 @@ const reducer = (state, action) => {
 const initialState = {
   currentStep: 1,
   title: "",
-  body: "",
+  content: "",
   isPublished: false,
-  mood: "",
+  moodStatus: "",
 };
 
 const EntryAddPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { currentStep } = state;
+  const { token } = useAuth();
 
   const onMoodSelected = (mood) =>
     dispatch({ type: "SELECT_MOOD", payload: mood });
@@ -52,9 +54,9 @@ const EntryAddPage = () => {
 
   useEffect(() => {
     if (state.currentStep === 3) {
-      axios.post("/api/entry/add", state);
+      fireStoreApi.post("/journals/addJournal", { ...state, userId: token });
     }
-  }, [state]);
+  }, [state, token]);
 
   let view = null;
   switch (currentStep) {
@@ -66,7 +68,7 @@ const EntryAddPage = () => {
     case 3:
       view = (
         <SubmitConfirmView
-          selectedMood={state.mood}
+          selectedMood={state.moodStatus}
           isPublished={state.isPublished}
         />
       );
@@ -155,9 +157,9 @@ function EditorView({ onFormSubmitted }) {
 
       <Styled.TextArea
         rows={15}
-        value={formData.body}
+        value={formData.content}
         onChange={handleChange}
-        name="body"
+        name="content"
       />
 
       <label>
