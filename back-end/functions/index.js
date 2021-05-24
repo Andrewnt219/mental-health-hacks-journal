@@ -1,3 +1,5 @@
+const cors = require("cors");
+
 const functions = require("firebase-functions");
 const routes = require("./routes/index");
 
