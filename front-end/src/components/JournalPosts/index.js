@@ -10,7 +10,7 @@ const JournalPosts = () => {
 
   useEffect(() => {
     fireStoreApi
-      .get(`/journals/getUsersJournals`, {
+      .get(`/journals/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
