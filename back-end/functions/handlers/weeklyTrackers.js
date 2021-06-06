@@ -35,7 +35,8 @@ exports.thisWeekTracker = (userId) => {
         (tracker) => current >= tracker.startDate && current <= tracker.endDate
       );
 
-      return tracker;
+      // tracker: an array
+      return tracker[0];
     })
     .catch((err) => {
       console.error(err);
@@ -68,7 +69,11 @@ exports.createAWeeklyTrackerForUser = (userId) => {
 
 exports.createAWeekTrackerForNewUser = (userId) => {
   const current = new Date();
+
+  // find the beginning of current date: monday
   const first = current.getDate() - current.getDay() + 1;
+
+  // next monday
   const last = first + 7;
 
   const newWeeklyTracker = {
